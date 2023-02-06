@@ -4,6 +4,7 @@ using NotePadAPI.DATA;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors();
 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,7 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(p => p.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 app.UseAuthorization();
 
 app.MapControllers();
