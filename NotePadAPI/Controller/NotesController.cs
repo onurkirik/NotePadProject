@@ -50,10 +50,8 @@ namespace NotePadAPI.Controller
         }
         // PUT: api/Notlar/3
         [HttpPut("{id}")]
-        public async Task<ActionResult<Note>> PutNote(int id, PutNoteDTO dto)
+        public async Task<ActionResult> PutNote(int id, PutNoteDTO dto)
         {
-            if (id != dto.Id)
-                return BadRequest();
             if(ModelState.IsValid)
             {
                 var note = await _db.Notes.FindAsync(id);
@@ -63,10 +61,11 @@ namespace NotePadAPI.Controller
                 note.Content = dto.Content;
                 note.CreationTime = DateTime.Now;
                 await _db.SaveChangesAsync();
+                return Ok();
             }
             return BadRequest(ModelState);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNote(int id)
         {
             var note = await _db.Notes.FindAsync(id);
